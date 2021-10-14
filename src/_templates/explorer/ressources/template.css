@@ -1,0 +1,108 @@
+*{
+    margin : 0;
+    padding : 0;
+}
+/* https://stackoverflow.com/questions/18761668/css-height-100-two-columns */
+html,body{
+    height:100%;
+}
+body{
+    margin : 0;
+    font-family: Tahoma, sans-serif;
+}
+.container {
+    display:table;
+    width:100%;
+    height:100%;
+}
+.cell {
+    display:table-cell;
+    vertical-align:top;
+    padding-top : 20px;
+}
+
+.left {
+    background-color: #7AA1E6;
+    width: 220px;
+    text-align : center;
+}
+
+.right {  
+    padding-left : 20px;
+}
+
+.navigation:before {
+    display: block;
+    width : 168px; /* width - padding*2 : sinon background-color dépasse */
+    padding : 6px;
+    
+    content: 'Navigation';
+    background-color : #0078D7;
+    
+    font-size: 11px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.navigation{
+    width : 180px;
+    margin: 0 auto;
+    text-align : left;
+    
+    border : 1px solid #0078D7;
+    background-color : #FFFFFF;
+    
+    font-size: 11px;
+    color: #0078D7;
+}
+.navigation li{
+    list-style-type: none;
+    padding : 6px;
+}
+.navigation li + li {
+    background-image: url(OneDrive_Folder_Icon.svg);
+	background-position: top left;
+	background-repeat: no-repeat;
+    padding-left : 30px;
+}
+.navigation a:link, .navigation a:visited, .navigation a:active{
+    text-decoration: none;
+}
+a:link, a:visited, a:active{
+    color: #0078D7;
+}
+
+h1 {
+    margin-bottom : 10px;
+	background-image: url(OneDrive_Folder_Icon.svg);
+	background-position: top left;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	
+	font-weight: bold;
+	font-size: 15px;
+	color: #000000;
+}
+h1:first-letter {
+    text-transform: uppercase;
+}
+
+div.photo {
+	padding: 4px;
+	float:left;
+	width: 108px;
+	height: 132px;
+	vertical-align: top;
+    overflow:hidden; 
+    word-wrap: break-word;
+    text-align : center;
+}
+span.photo-name {
+	color: #000000;
+	font-family: Tahoma, sans-serif;
+	font-weight: normal;
+	font-size: 11px;
+	text-decoration: none;
+	/* https://stackoverflow.com/questions/14061228/remove-white-space-above-and-below-large-text-in-an-inline-block-element */
+	display:block;
+	line-height: 80%;
+}

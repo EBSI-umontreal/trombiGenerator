@@ -1,0 +1,14 @@
+src/album/*
+!src/album/.gitkeep
+
+src/vendor/ant-contrib-1.0b3/*
+!src/vendor/ant-contrib-1.0b3/.gitkeep
+
+src/vendor/apache-ant-1.10.11/*
+!src/vendor/apache-ant-1.10.11/.gitkeep
+
+src/vendor/jdk8u302-b08/*
+!src/vendor/jdk8u302-b08/.gitkeep
+
+src/vendor/SaxonHE10-6J/*
+!src/vendor/SaxonHE10-6J/.gitkeep

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="trombiGenerator" basedir="." default="choix">
+	
+	<property name="dossier-output" value="./album"/>
+	
+	
+	<target name="about" description="À propos">
+		<echo>+-----------------------------------------------------------+</echo>
+		<echo>   trombiGenerator   </echo>
+		<echo>+-----------------------------------------------------------+</echo>
+		<echo> EBSI - Universite de Montreal</echo>
+		<echo> Arnaud d'Alayer 2021</echo>
+		<echo />
+		<echo> Version : 20211014</echo>
+		<echo>+-----------------------------------------------------------+</echo>
+	</target>
+	
+	<!-- ==========================================================
+		 =                    Tâche choix                   =
+		 ==========================================================
+	-->
+	<target name="choix" depends="about">
+		<!-- Éventuellement, mettre ici le code pour permettre une sélection du template à utiliser -->
+		<antcall target="template.explorer"/>
+	</target>
+	
+	
+	<target name="template.explorer">
+		<echo>Utilisation du template Explorer</echo>
+		<property name="template" value="./_templates/explorer"/>
+		<antcall target="album"/>
+	</target>
+	
+	
+	<target name="album">
+		
+		<echo>album : Ajout des ressources</echo>
+		<delete dir="${dossier-output}/ressources"/>
+		<copy todir="${dossier-output}/ressources" >
+			<fileset dir="${template}/ressources" includes="**"/>
+		</copy>
+		
+		<echo>album : Creer la liste des fichiers</echo>
+		<saxon10-xquery 
+			xquery="./list-files.xquery"
+			out="${dossier-output}/tempo.xml"/>
+		
+		<echo>album : Creer les pages HTML</echo>
+		<saxon10-xslt
+			in="./album/tempo.xml"
+			style="${template}/template.xsl"
+			destdir="${dossier-output}/tempo.txt"/>
+		
+		<echo>album : Suppression des fichiers temporaires</echo>
+		<delete file="${dossier-output}/tempo.xml"/>
+		<delete file="${dossier-output}/tempo.txt"/>
+		
+	</target>
+	
+	
+	<!-- ===========================================================
+		  =                      Moteurs XSLT                      =
+		  ==========================================================
+	-->
+	<!-- http://vocaro.com/trevor/blog/2007/01/08/how-to-use-saxon-with-ant/ -->
+	<macrodef name="saxon10-xslt">
+		<attribute name="in"/>
+		<attribute name="destdir"/>
+		<attribute name="style"/>
+		<sequential>
+			<echo>Transformation XSLT avec Saxon 10 : in=@{in} out=@{destdir} style=@{style}</echo>
+			<java classname="net.sf.saxon.Transform"
+				classpath="./vendor/SaxonHE10-6J/saxon-he-10.6.jar"
+				fork="true">
+				<arg value="-o:@{destdir}"/>
+				<arg value="@{in}"/>
+				<arg value="@{style}"/>
+			</java>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="saxon10-xquery">
+		<attribute name="xquery"/>
+		<attribute name="out"/>
+		<sequential>
+			<echo>XQuery avec Saxon 10 : xquery=@{xquery} out=@{out}</echo>
+			<java classname="net.sf.saxon.Query"
+				classpath="./vendor/SaxonHE10-6J/saxon-he-10.6.jar"
+				fork="true">
+				<arg value="@{xquery}"/>
+				<arg value="-o:@{out}"/>
+			</java>
+		</sequential>
+	</macrodef>
+	
+</project>
