@@ -126,10 +126,37 @@
 
 	
 	<xsl:template match="file">
+		<xsl:variable name="nomFichier">
+			<xsl:call-template name="substring-before-last">
+				<xsl:with-param name="string1" select="." />
+				<xsl:with-param name="string2" select="'.'" />
+			</xsl:call-template>
+		</xsl:variable>
+	
 		<div class="photo">
 			<img src="./{.}" width="100" height="100" />
-			<span class="photo-name"><xsl:value-of select="replace(substring-before(.,'.'),'%20',' ')" disable-output-escaping="yes"/></span>
+			<span class="photo-name"><xsl:value-of select="replace($nomFichier,'%20',' ')" disable-output-escaping="yes"/></span>
 		</div>
 	</xsl:template>	
+	
+	<!-- Source : https://stackoverflow.com/questions/1119449/removing-the-last-characters-in-an-xslt-string/ -->
+	<xsl:template name="substring-before-last">
+		<xsl:param name="string1" select="''" />
+		<xsl:param name="string2" select="''" />
+
+		<xsl:if test="$string1 != '' and $string2 != ''">
+			<xsl:variable name="head" select="substring-before($string1, $string2)" />
+			<xsl:variable name="tail" select="substring-after($string1, $string2)" />
+			<xsl:value-of select="$head" />
+			<xsl:if test="contains($tail, $string2)">
+				<xsl:value-of select="$string2" />
+				<xsl:call-template name="substring-before-last">
+					<xsl:with-param name="string1" select="$tail" />
+					<xsl:with-param name="string2" select="$string2" />
+				</xsl:call-template>
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
+	
 	
 </xsl:stylesheet>
